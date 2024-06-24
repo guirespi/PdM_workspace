@@ -50,3 +50,16 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# Project's folder
+Debug/
+.metadata/
+.metadata/
+*.png
+*.css
+.settings/
+.cproject
+.mxproject
+.project
+*.launch
+LICENSE.*
