@@ -48,9 +48,9 @@ typedef struct {
 } led_pwm_t;
 
 typedef struct {
-	uint32_t cycle;
-	uint8_t cycles_nbr;
-	uint8_t duty_cycle;
+	uint32_t cycle; /* Cycle duration or period in milliseconds */
+	uint8_t cycles_nbr /* Number of cycles the led muts complete */;
+	uint8_t duty_cycle /* Duty cycle */;
 } led_pwm_cfg_t;
 
 /* USER CODE END PTD */
@@ -60,13 +60,18 @@ typedef struct {
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
+
+/* A little helper to declare led pwm's configuration */
 #define DECLARE_LED_PWM_PTR_CFG(cycle, cycles_nbr, duty_cycle) (&((led_pwm_cfg_t ){cycle,cycles_nbr,duty_cycle}))
+
+/* Macro for some values */
 
 #define LED_PWM_COMMON_DUTY_CYCLE	(50)
 #define LED_PWM_COMMON_CYCLE_NBR	(5)
 #define LED_PWM_1S_CYCLE	(1000)
 #define LED_PWM_200MS_CYCLE	(200)
 #define LED_PWM_100MS_CYCLE	(100)
+
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -88,12 +93,54 @@ static led_pwm_cfg_t *led_cfg_array[] = {
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
+/**
+ * @brief Init a delay object.
+ * 
+ * @param delay Delay object valid pointer.
+ * @param duration Duration in milliseconds for the delay.
+ */
 void delayInit(delay_t *delay, tick_t duration);
+/**
+ * @brief Read if delay object is completed. This functions also runs a delay if
+ * it was not running and succesive calls checks if the configured delay is done.
+ * 
+ * @param delay Delay object valid and previous initialized pointer.
+ * @return bool_t true: Delay already acomplished. false: Delay not acomplished yet.
+ */
 bool_t delayRead(delay_t *delay);
+/**
+ * @brief Change a Delay's object duration.
+ * 
+ * @param delay Delay object valid pointer.
+ * @param duration New duration in milliseconds.
+ */
 void delayWrite(delay_t *delay, tick_t duration);
+/**
+ * @brief Init a led pwm object-
+ * 
+ * @param led led pwm object valid pointer.
+ * @param led_enum led enum of the board used.
+ */
 void led_pwm_init(led_pwm_t *led, Led_TypeDef led_enum);
+/**
+ * @brief Set a PWM config to a previous initialized led pwm object.
+ * 
+ * @param led led pwm object valid pointer.
+ * @param led_pwm_cfg led pwm configuration valid pointer.
+ */
 void led_pwm_set_cfg(led_pwm_t *led, led_pwm_cfg_t *led_pwm_cfg);
+/**
+ * @brief Start a previous initialized and configurated led pwm object.
+ * 
+ * @param led led pwm object valid pointer.
+ */
 void led_pwm_start(led_pwm_t *led);
+/**
+ * @brief Start an array of led pwm configs.
+ * 
+ * @param led led pwm object valid pointer.
+ * @param led_pwm_cfgs Array of led pwm configs valid pointers. The array must be NULL terminated.s
+ */
 void led_pwm_start_cfg_array(led_pwm_t *led, led_pwm_cfg_t **led_pwm_cfgs);
 /* USER CODE END PFP */
 
