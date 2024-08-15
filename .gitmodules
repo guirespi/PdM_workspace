@@ -1,0 +1,3 @@
+[submodule "tp_final"]
+	path = tp_final
+	url = https://github.com/guirespi/stm32_firmware_bootloader.git
